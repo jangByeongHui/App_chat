@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../theme';
 
+import {Alert} from 'react-native';
+import {login} from '../utils/firebase';
 const Container =styled.View`
     flex:1;
     align-items:center;
@@ -55,10 +57,16 @@ const Login =({navigation})=>{
     //공백 제거
     const _handlePasswordChange = password=>{
         setPassword(removeWhitespace(password));
-
     };
 
-    const _handleLoginButtonPress=()=>{};
+    const _handleLoginButtonPress=async () =>{
+        try{
+            const user= await login({email,password});
+            Alert.alert('로그인 성공',user.email);
+        } catch(e){
+            Alert.alert('로그인 실패',e.message)
+        }
+    };
 
     return(
         <KeyboardAwareScrollView
@@ -71,7 +79,7 @@ const Login =({navigation})=>{
                     label="Email"
                     value={email}
                     onChangeText={_handleEmailChange}
-                    onSubmitEditing={_handleLoginButtonPress}
+                    onSubmitEditing={()=>passwordRef.current.focus()}
                     placeholder="Email"
                     returnKeyType="next"
                 />
@@ -80,9 +88,10 @@ const Login =({navigation})=>{
                     label="Password"
                     value={password}
                     onChangeText={_handlePasswordChange}
-                    onSubmitEditing={()=>{}}
+                    onSubmitEditing={_handleLoginButtonPress}
                     placeholder="Password"
                     returnKeyType="done"
+                    isPassword
                 />
                 <ErrorText>{errorMessage}</ErrorText>
                 

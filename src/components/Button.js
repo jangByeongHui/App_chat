@@ -39,7 +39,7 @@ Button.defaultProps={
     isFilled:true,
 };
 
-Button.PropTypes={
+Button.propTypes={
     containerStyle:PropTypes.object,
     title:PropTypes.string,
     onPress:PropTypes.func.isRequired,

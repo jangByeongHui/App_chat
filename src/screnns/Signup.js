@@ -3,13 +3,16 @@ import styled from 'styled-components/native';
 import { Image,Input,Button } from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { removeWhitespace, validateEmail } from '../utils/common';
+import {images} from '../utils/Images';
+import {Alert} from 'react-native';
+import {signup} from '../utils/firebase';
 
 const Container=styled.View`
     flex:1;
     justify-content:center;
     align-items:center;
     background-color:${({theme})=>theme.background};
-    padding:0 20px;
+    padding:40px 20px;
 `;
 const ErrorText=styled.Text`
     align-items:flex-start;
@@ -22,6 +25,7 @@ const ErrorText=styled.Text`
 `;
 
 const Signup=()=>{
+    const [photoUrl,setPhotoUrl]=useState(images.photo);
     const [name,setName]=useState('');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
@@ -32,21 +36,28 @@ const Signup=()=>{
     const emailRef=useRef();
     const passwordRef=useRef();
     const passwordConfirmRef=useRef();
+    const didMountRef=useRef();
 
     useEffect(()=>{
-        let _errorMessage='';
-        if(!name){
-            _errorMessage='이름을 입력하세요.';  
-        } else if(!validateEmail(email)){
-            _errorMessage='이메일을 다시 확인하세요';
-        } else if(password.length<6){
-            _errorMessage='비밀번호는 7글자 이상이어야 합니다.';
-        } else if(password!==passwordConfirm){
-            _errorMessage='비밀번호가 맞지 않습니다';
-        } else{
-            _errorMessage='';
+        if(didMountRef.current)
+        {
+            let _errorMessage='';
+            if(!name){
+                _errorMessage='이름을 입력하세요.';  
+            } else if(!validateEmail(email)){
+                _errorMessage='이메일을 다시 확인하세요';
+            } else if(password.length<6){
+                _errorMessage='비밀번호는 7글자 이상이어야 합니다.';
+            } else if(password!==passwordConfirm){
+                _errorMessage='비밀번호가 맞지 않습니다';
+            } else{
+                _errorMessage='';
+            }
+            setErrorMessage(_errorMessage);
+        } else {
+            didMountRef.current=true;
         }
-        setErrorMessage(_errorMessage);
+        
     },[name,email,password,passwordConfirm])
 
     useEffect(()=>{
@@ -55,15 +66,25 @@ const Signup=()=>{
         );
     },[name,email,password,passwordConfirm,errorMessage]);
 
-    const _handleSignButtonPress=()=>{};
+    const _handleSignButtonPress= async()=>{
+        try{
+            const user = await signup({email,password,name,photoUrl});
+            console.log(user);
+            Alert.alert('회원가입이 완료되었습니다.',user.email);
+        } catch(e){
+            Alert.alert('회원가입 실패',e.message);
+        }
+    };
 
     return(
-        <KeyboardAwareScrollView
-            contentContainerStyle={{flex:1}}
-            extraScrollHeight={20}
-        >
+        <KeyboardAwareScrollView extraScrollHeight={20}>
             <Container>
-                <Image rounded/>
+                <Image 
+                    rounded 
+                    url={photoUrl} 
+                    showButton
+                    onChangeImage={url=>setPhotoUrl(url)}
+                />
                 <Input
                     label="Name"
                     value={name}
