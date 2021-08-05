@@ -6,6 +6,8 @@ import { removeWhitespace, validateEmail } from '../utils/common';
 import {images} from '../utils/Images';
 import {Alert} from 'react-native';
 import {signup} from '../utils/firebase';
+import { ProgressContext, ProgressProvider } from '../contexts';
+import { useContext } from 'react/cjs/react.development';
 
 const Container=styled.View`
     flex:1;
@@ -25,6 +27,7 @@ const ErrorText=styled.Text`
 `;
 
 const Signup=()=>{
+    const {spinner}=useContext(ProgressContext);
     const [photoUrl,setPhotoUrl]=useState(images.photo);
     const [name,setName]=useState('');
     const [email,setEmail]=useState('');
@@ -68,11 +71,14 @@ const Signup=()=>{
 
     const _handleSignButtonPress= async()=>{
         try{
+            spinner.start();
             const user = await signup({email,password,name,photoUrl});
             console.log(user);
             Alert.alert('회원가입이 완료되었습니다.',user.email);
         } catch(e){
             Alert.alert('회원가입 실패',e.message);
+        } finally{
+            spinner.stop();
         }
     };
 

@@ -1,4 +1,5 @@
-import React ,{useState, useRef,useEffect} from 'react';
+import React ,{useState, useRef,useEffect,useContext} from 'react';
+import {ProgressContext} from '../contexts';
 import styled from 'styled-components/native';
 
 import {Image, Input} from '../components';
@@ -31,6 +32,7 @@ const ErrorText=styled.Text`
 `;
 //로그인 구현 
 const Login =({navigation})=>{
+    const {spinner}=useContext(ProgressContext);
     const insets=useSafeAreaInsets();
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
@@ -61,10 +63,13 @@ const Login =({navigation})=>{
 
     const _handleLoginButtonPress=async () =>{
         try{
+            spinner.start();
             const user= await login({email,password});
             Alert.alert('로그인 성공',user.email);
         } catch(e){
             Alert.alert('로그인 실패',e.message)
+        } finally{
+            spinner.stop();
         }
     };
 

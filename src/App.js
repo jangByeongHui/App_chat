@@ -7,6 +7,8 @@ import { ThemeProvider } from 'styled-components/native';
 import {theme} from './theme';
 import Navigation from './navigations';
 import{images} from './utils/Images';
+import{ProgressProvider} from './contexts';
+
 const cacheImages=images=>{
     return images.map(image=>{
         if(typeof image==='string'){
@@ -33,19 +35,13 @@ const App=()=>{
 
         await Promise.all([...imageAssets,...fontAssets]);
     };
-/*
-    return(
-        <ThemeProvider theme={theme}>
-            <StatusBar barStyle="dark-content"/>
-            <Navigation/>
-        </ThemeProvider>
-        
-    );
-*/
+
     return isReady ? (
         <ThemeProvider theme={theme}>
-            <StatusBar barStyle="dark-content"/>
-            <Navigation/>
+            <ProgressProvider>
+                <StatusBar barStyle="dark-content"/>
+                <Navigation/>
+            </ProgressProvider>
         </ThemeProvider>
         
 
