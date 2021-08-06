@@ -1,4 +1,4 @@
-import React,{useState,useRef,useEffect}from 'react';
+import React,{useState,useRef,useEffect,useContext}from 'react';
 import styled from 'styled-components/native';
 import { Image,Input,Button } from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -6,8 +6,8 @@ import { removeWhitespace, validateEmail } from '../utils/common';
 import {images} from '../utils/Images';
 import {Alert} from 'react-native';
 import {signup} from '../utils/firebase';
-import { ProgressContext, ProgressProvider } from '../contexts';
-import { useContext } from 'react/cjs/react.development';
+import { ProgressContext, UserContext } from '../contexts';
+
 
 const Container=styled.View`
     flex:1;
@@ -40,7 +40,7 @@ const Signup=()=>{
     const passwordRef=useRef();
     const passwordConfirmRef=useRef();
     const didMountRef=useRef();
-
+    const {dispatch} = useContext(UserContext);
     useEffect(()=>{
         if(didMountRef.current)
         {
@@ -73,6 +73,7 @@ const Signup=()=>{
         try{
             spinner.start();
             const user = await signup({email,password,name,photoUrl});
+            dispatch(user);
             console.log(user);
             Alert.alert('회원가입이 완료되었습니다.',user.email);
         } catch(e){

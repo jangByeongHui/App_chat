@@ -1,7 +1,7 @@
 import React,{useContext} from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
-import { Login,Signup } from '../screnns';
+import { Login,Signup } from '../screens';
 
 const Stack=createStackNavigator();
 

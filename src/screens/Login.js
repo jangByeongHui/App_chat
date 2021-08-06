@@ -1,5 +1,5 @@
 import React ,{useState, useRef,useEffect,useContext} from 'react';
-import {ProgressContext} from '../contexts';
+import {ProgressContext, UserContext} from '../contexts';
 import styled from 'styled-components/native';
 
 import {Image, Input} from '../components';
@@ -32,6 +32,7 @@ const ErrorText=styled.Text`
 `;
 //로그인 구현 
 const Login =({navigation})=>{
+    const {dispatch}=useContext(UserContext);
     const {spinner}=useContext(ProgressContext);
     const insets=useSafeAreaInsets();
     const [email,setEmail]=useState('');
@@ -52,7 +53,7 @@ const Login =({navigation})=>{
         setEmail(changedEmail);
         
         setErrorMessage(
-            validateEmail(changedEmail)?'':'Please verify your email.'
+            validateEmail(changedEmail)?'':'이메일 형식에 맞춰주세요.'
         );
 
     };
@@ -65,6 +66,7 @@ const Login =({navigation})=>{
         try{
             spinner.start();
             const user= await login({email,password});
+            dispatch(user);
             Alert.alert('로그인 성공',user.email);
         } catch(e){
             Alert.alert('로그인 실패',e.message)
