@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
     const changedEmail = removeWhitespace(email);
     setEmail(changedEmail);
     setErrorMessage(
-      validateEmail(changedEmail) ? '' : '이메일을 확인해주세요.'
+      validateEmail(changedEmail) ? '' : 'Please verify your email.'
     );
   };
   const _handlePasswordChange = password => {

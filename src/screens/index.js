@@ -5,4 +5,4 @@ import ChannelCreation from './ChannelCreation';
 import ChannelList from './ChannelList';
 import Profile from './Profile';
 
-export{Login,Signup,Channel,ChannelCreation,ChannelList,Profile};
+export { Login, Signup, Channel, ChannelCreation, ChannelList, Profile };

@@ -3,7 +3,7 @@ import { ProgressContext, UserContext } from '../contexts';
 import styled from 'styled-components/native';
 import { Image, Input, Button } from '../components';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { validateEmail, removeWhitespace,validatePassword } from '../utils/common';
+import { validateEmail, removeWhitespace } from '../utils/common';
 import { images } from '../utils/images';
 import { Alert } from 'react-native';
 import { signup } from '../utils/firebase';
@@ -46,13 +46,13 @@ const Signup = () => {
     if (didMountRef.current) {
       let _errorMessage = '';
       if (!name) {
-        _errorMessage = '이름을 입력하세요.';
+        _errorMessage = 'Please enter your name.';
       } else if (!validateEmail(email)) {
-        _errorMessage = '이메일을 확인해주세요.';
-      } else if (!validatePassword(password)) {
-        _errorMessage = '숫자,영문,특수문자 1개이상 최소 6자에서 16자로 입력하세요.';
+        _errorMessage = 'Please verify your email.';
+      } else if (password.length < 6) {
+        _errorMessage = 'The password must contain 6 characters at least.';
       } else if (password !== passwordConfirm) {
-        _errorMessage = '비밀번호가 다릅니다.';
+        _errorMessage = 'Passwords need to match.';
       } else {
         _errorMessage = '';
       }
@@ -74,7 +74,7 @@ const Signup = () => {
       const user = await signup({ email, password, name, photoUrl });
       dispatch(user);
     } catch (e) {
-      Alert.alert('회원가입 에러', e.message);
+      Alert.alert('Signup Error', e.message);
     } finally {
       spinner.stop();
     }
@@ -126,7 +126,7 @@ const Signup = () => {
           value={passwordConfirm}
           onChangeText={text => setPasswordConfirm(removeWhitespace(text))}
           onSubmitEditing={_handleSignupButtonPress}
-          placeholder="비밀번호 확인"
+          placeholder="비밀번호 재입력"
           returnKeyType="done"
           isPassword
         />
