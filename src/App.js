@@ -6,7 +6,7 @@ import * as Font from 'expo-font';
 import { ThemeProvider } from 'styled-components/native';
 import {theme} from './theme';
 import Navigation from './navigations';
-import{images} from './utils/Images';
+import{images} from './utils/images';
 import{ProgressProvider,UserProvider} from './contexts';
 
 

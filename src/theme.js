@@ -18,12 +18,18 @@ export const theme={
     imageBackground:colors.grey_0,
     imageButtonBackground:colors.grey_1,
     imageButtonIcon:colors.white,
+
     label:colors.grey_1,
     inputPlaceholder:colors.grey_1,
-    inputPlaceholder:colors.grey_1,
+    inputBorder:colors.grey_1,
+    inputDisabledBackground:colors.grey_0,
+
+
     buttonBackground:colors.blue,
     buttonTitle:colors.white,
     buttonUnfilledTitle:colors.blue,
+    buttonLogout:colors.red,
+
     headerTintColor:colors.black,
     
     tabActiveColor:colors.blue,

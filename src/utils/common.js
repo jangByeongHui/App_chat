@@ -3,6 +3,12 @@ export const validateEmail = email =>{
     return regex.test(email);
 };
 
+export const validatePassword = password =>{
+    const regex= /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/
+
+    return regex.test(password);
+};
+
 export const removeWhitespace = text =>{
     const regex=/\s/g;
     return text.replace(regex,'');
